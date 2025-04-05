@@ -1,18 +1,22 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 
+const filepath = path.join(__dirname, "../practice/dist");
+
+const serveStatic = express.static(filepath);
+
+//
 const logRoutes = (req, res, next) => {
   const time = new Date().toLocaleString();
   console.log(`${req.method}: ${req.originalUrl} - ${time}`);
   next(); // Passes the request to the next middleware/controller
 };
 
+app.use(serveStatic);
 app.use(logRoutes);
 
 // All endpoints start at `/` which is the "root" of the server
-app.get("/", (req, res, next) => {
-  res.send("Hey, Im Ajene. This is SWE-8-1 and I'm building my first server.");
-});
 
 app.get("/api/picture", (req, res, next) => {
   res.json({
@@ -28,10 +32,12 @@ app.get("/api/joke", (req, res, next) => {
 });
 
 app.get("/api/rollDie", (req, res, next) => {
-  let quantity = parseInt(req.query.quantity);
+  let quantity = req.query.quantity;
 
-  if (isNaN(quantity) || quantity <= 0) {
+  if (!quantity || isNaN(quantity) || quantity <= 0) {
     quantity = 1;
+  } else {
+    quantity = Number(quantity);
   }
 
   const rolls = [];
