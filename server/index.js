@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
-const filepath = path.join(__dirname, "../practice/dist");
+const filepath = path.join(__dirname, "/../practice/dist");
 
 const serveStatic = express.static(filepath);
 
@@ -17,7 +17,6 @@ app.use(serveStatic);
 app.use(logRoutes);
 
 // All endpoints start at `/` which is the "root" of the server
-
 app.get("/api/picture", (req, res, next) => {
   res.json({
     src: "https://static-cdn.jtvnw.net/jtv_user_pictures/meowntain-profile_banner-71b7a6d0d943dc9e-480.jpeg",
